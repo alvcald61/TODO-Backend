@@ -23,13 +23,18 @@ class SecurityConfig(
     val JWTAuthorizationFilter: JWTAuthorizationFilter
 ) {
 
+//    @Bean
+//    fun  filterChain( http : HttpSecurity) : SecurityFilterChain{
+//        return http.cors().disable().build()
+//    }
+
     @Bean
     @Throws(Exception::class)
     fun filterChain(http: HttpSecurity, authenticationManager: AuthenticationManager?): SecurityFilterChain {
         val jwtAuthenticationFilter = JWTAuthenticationFilter(authenticationManager)
         jwtAuthenticationFilter.setFilterProcessesUrl("/api/v1/auth/login")
         return http
-            .csrf().and()
+            .csrf().disable()
             .cors().disable()
             .authorizeRequests()
             .antMatchers("/api/v1/users/**").authenticated()
